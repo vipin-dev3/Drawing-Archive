@@ -23,8 +23,8 @@ export default function Footer() {
           {/* Brand & Manifesto (5 cols) */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-950/40 via-zinc-900/80 to-black border border-blue-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(42,77,124,0.2)] p-1">
-                <TempleLogo className="w-full h-full object-contain" id="footer-temple-logo" />
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-950/40 via-zinc-900/90 to-black border border-amber-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.2)] p-1">
+                <TempleLogo className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]" id="footer-temple-logo" />
               </div>
               <span className="font-display tracking-[0.2em] text-base font-bold text-zinc-100">
                 AVATAR

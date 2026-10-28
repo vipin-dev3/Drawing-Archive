@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ARTWORKS_DATA, ARTWORK_CATEGORIES } from './data/artworksData';
+import { THEMES, getTheme, DEFAULT_THEME_ID } from './data/themesData';
 import Navbar from './components/ui/Navbar';
 import CategoryFilter from './components/ui/CategoryFilter';
 import GalleryGrid from './components/ui/GalleryGrid';
@@ -13,7 +14,27 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [inspectingArtwork, setInspectingArtwork] = useState(null);
   const [prefilledArtwork, setPrefilledArtwork] = useState(null);
-  const [isDarkroomMode, setIsDarkroomMode] = useState(false);
+
+  // Theme state: 'atelier', 'darkroom', 'midnight', 'sepia'
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('avatar_gallery_theme') || DEFAULT_THEME_ID;
+    } catch {
+      return DEFAULT_THEME_ID;
+    }
+  });
+
+  const activeThemeConfig = useMemo(() => getTheme(theme), [theme]);
+  const isDarkroomMode = theme === 'darkroom';
+
+  const handleSelectTheme = (newTheme) => {
+    setTheme(newTheme);
+    try {
+      localStorage.setItem('avatar_gallery_theme', newTheme);
+    } catch {
+      // Ignore localStorage write error
+    }
+  };
 
   // Compute artwork count per category
   const artworkCounts = useMemo(() => {
@@ -40,18 +61,28 @@ export default function App() {
     });
   }, [selectedCategory, searchQuery]);
 
-  // Keyboard shortcut listener for Darkroom Mode [D]
+  // Keyboard shortcut listener:
+  // [D] toggles Darkroom mode
+  // [T] cycles through all 4 exhibition themes
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
       if (e.key === 'd' || e.key === 'D') {
         e.preventDefault();
-        setIsDarkroomMode((prev) => !prev);
+        handleSelectTheme(theme === 'darkroom' ? 'atelier' : 'darkroom');
+      } else if (e.key === 't' || e.key === 'T') {
+        e.preventDefault();
+        const themeIds = THEMES.map((t) => t.id);
+        const currentIndex = themeIds.indexOf(theme);
+        const nextTheme = themeIds[(currentIndex + 1) % themeIds.length];
+        handleSelectTheme(nextTheme);
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [theme]);
 
   const handleSelectCategory = (catId) => {
     setSelectedCategory(catId);
@@ -77,14 +108,16 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-500 flex flex-col ${
-        isDarkroomMode ? 'darkroom-active bg-[#030304] text-zinc-200' : 'bg-[#070709] text-zinc-100'
+      className={`min-h-screen transition-colors duration-500 flex flex-col theme-${theme} ${
+        activeThemeConfig.bgClass
+      } ${
+        isDarkroomMode ? 'darkroom-active' : ''
       } selection:bg-amber-500/20 selection:text-amber-200`}
     >
       {/* Top Navbar */}
       <Navbar
-        isDarkroomMode={isDarkroomMode}
-        onToggleDarkroom={() => setIsDarkroomMode((prev) => !prev)}
+        currentTheme={theme}
+        onSelectTheme={handleSelectTheme}
         onOpenCommission={handleOpenCommissionDirect}
       />
 
@@ -101,7 +134,7 @@ export default function App() {
                 </span>
               </span>
               <button
-                onClick={() => setIsDarkroomMode(false)}
+                onClick={() => handleSelectTheme('atelier')}
                 className="underline hover:text-white cursor-pointer"
               >
                 Exit Darkroom [D]
@@ -114,7 +147,7 @@ export default function App() {
         <section id="gallery-section" className="relative pt-6 pb-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
             <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100">
-              {isDarkroomMode ? 'The B&W Darkroom Archive' : 'The Drawing Archive'}
+              {activeThemeConfig.tagline}
             </h1>
 
             <p className="text-xs sm:text-base text-zinc-400 max-w-2xl mx-auto font-serif-elegant italic leading-relaxed">
@@ -132,8 +165,12 @@ export default function App() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search drawings by title, tag or medium..."
                   className={`w-full pl-10 pr-4 py-2.5 rounded-full text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none transition-colors shadow-inner border ${
-                    isDarkroomMode
+                    theme === 'darkroom'
                       ? 'bg-black/90 border-red-900/40 focus:border-red-500/70'
+                      : theme === 'midnight'
+                      ? 'bg-slate-950/90 border-sky-900/40 focus:border-sky-500/70'
+                      : theme === 'sepia'
+                      ? 'bg-stone-950/90 border-amber-900/40 focus:border-amber-600/70'
                       : 'bg-zinc-900/80 border-white/10 focus:border-amber-500/60'
                   }`}
                 />
@@ -158,11 +195,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* Clean 2D Museum Gallery Grid with Spotlight Cursor Follow */}
+          {/* Clean 2D Museum Gallery Grid with Dynamic Theme & Spotlight Cursor Follow */}
           <div className="mt-4">
             {filteredArtworks.length > 0 ? (
               <GalleryGrid
                 artworks={filteredArtworks}
+                theme={theme}
                 isDarkroomMode={isDarkroomMode}
                 onInspectArtwork={(art) => setInspectingArtwork(art)}
               />
@@ -185,6 +223,7 @@ export default function App() {
       {inspectingArtwork && (
         <ArtworkDetailModal
           artwork={inspectingArtwork}
+          theme={theme}
           isDarkroomMode={isDarkroomMode}
           onClose={() => setInspectingArtwork(null)}
           onInquireArtwork={handleInquireFromModal}

@@ -95,21 +95,57 @@
 }
 
 /* ==========================================================================
-   Darkroom High-Contrast Black & White Mode
+   Exhibition Ambient Themes: Atelier, Darkroom, Midnight, Sepia
    ========================================================================== */
-.darkroom-active {
+
+/* 1. Atelier Noir & Gold (Default) */
+.theme-atelier {
+  --bg-dark: #070709;
+  --theme-accent: #d4af37;
+}
+
+/* 2. Darkroom High-Contrast Black & White Mode */
+.darkroom-active,
+.theme-darkroom {
   --bg-dark: #030304;
+  --theme-accent: #ef4444;
   background-color: #030304 !important;
 }
 
-.darkroom-active .artwork-image-el {
+.darkroom-active .artwork-image-el,
+.theme-darkroom .artwork-image-el {
   filter: grayscale(100%) contrast(155%) brightness(92%) !important;
   transition: filter 0.4s ease;
 }
 
-.darkroom-active .darkroom-accent-glow {
+.darkroom-active .darkroom-accent-glow,
+.theme-darkroom .darkroom-accent-glow {
   box-shadow: 0 0 25px rgba(220, 38, 38, 0.25) !important;
   border-color: rgba(239, 68, 68, 0.45) !important;
+}
+
+/* 3. Midnight Sapphire Theme */
+.theme-midnight {
+  --bg-dark: #050a14;
+  --theme-accent: #38bdf8;
+  background-color: #050a14 !important;
+}
+
+.theme-midnight .artwork-image-el {
+  filter: contrast(104%) saturate(102%);
+  transition: filter 0.4s ease;
+}
+
+/* 4. Warm Parchment / Sepia Theme */
+.theme-sepia {
+  --bg-dark: #120f0c;
+  --theme-accent: #d97706;
+  background-color: #120f0c !important;
+}
+
+.theme-sepia .artwork-image-el {
+  filter: sepia(18%) contrast(108%) brightness(98%);
+  transition: filter 0.4s ease;
 }
 
 /* ==========================================================================
@@ -138,12 +174,33 @@
   mix-blend-mode: screen;
 }
 
-.darkroom-active .spotlight-artwork-container::after {
+.darkroom-active .spotlight-artwork-container::after,
+.theme-darkroom .spotlight-artwork-container::after {
   background: radial-gradient(
     380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
     rgba(255, 255, 255, 0.35) 0%,
-    rgba(239, 68, 68, 0.16) 35%,
+    rgba(239, 68, 68, 0.18) 35%,
     rgba(0, 0, 0, 0) 70%
+  );
+  mix-blend-mode: screen;
+}
+
+.theme-midnight .spotlight-artwork-container::after {
+  background: radial-gradient(
+    380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(220, 240, 255, 0.32) 0%,
+    rgba(56, 189, 248, 0.16) 35%,
+    rgba(5, 10, 20, 0) 70%
+  );
+  mix-blend-mode: screen;
+}
+
+.theme-sepia .spotlight-artwork-container::after {
+  background: radial-gradient(
+    380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(255, 235, 205, 0.32) 0%,
+    rgba(217, 119, 6, 0.16) 35%,
+    rgba(18, 15, 12, 0) 70%
   );
   mix-blend-mode: screen;
 }

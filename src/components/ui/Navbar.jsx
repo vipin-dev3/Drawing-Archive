@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Compass, Mail, Menu, X, Contrast } from 'lucide-react';
+import { Compass, Mail, Menu, X } from 'lucide-react';
 import StudioAudio from './StudioAudio';
 import TempleLogo from './TempleLogo';
+import ThemeSelector from './ThemeSelector';
 
 export default function Navbar({
-  isDarkroomMode = false,
-  onToggleDarkroom,
+  currentTheme = 'atelier',
+  onSelectTheme,
   onOpenCommission,
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -26,8 +27,8 @@ export default function Navbar({
           className="flex items-center gap-3 group cursor-pointer"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-blue-950/40 via-zinc-900/80 to-black border border-blue-500/20 flex items-center justify-center shadow-[0_0_20px_rgba(42,77,124,0.25)] group-hover:border-blue-400/40 transition-all p-1">
-            <TempleLogo className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(42,77,124,0.5)] transition-transform duration-300 group-hover:scale-105" id="nav-temple-logo" />
+          <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-amber-950/40 via-zinc-900/90 to-black border border-amber-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.25)] group-hover:border-amber-400/60 group-hover:shadow-[0_0_25px_rgba(212,175,55,0.4)] transition-all p-1">
+            <TempleLogo className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(212,175,55,0.5)] transition-transform duration-300 group-hover:scale-105" id="nav-temple-logo" />
           </div>
           <span className="font-display tracking-[0.2em] text-base sm:text-lg font-bold text-zinc-100 uppercase">
             AVATAR
@@ -57,22 +58,11 @@ export default function Navbar({
           {/* Studio Audio */}
           <StudioAudio />
 
-          {/* Interactive Darkroom Mode Toggle */}
-          <button
-            onClick={onToggleDarkroom}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer border ${
-              isDarkroomMode
-                ? 'bg-red-950/70 border-red-500/60 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.25)]'
-                : 'bg-zinc-900/80 border-white/10 text-zinc-400 hover:text-zinc-200 hover:border-white/20'
-            }`}
-            title="Toggle High-Contrast B&W Darkroom Mode [D]"
-          >
-            <Contrast className={`w-3.5 h-3.5 ${isDarkroomMode ? 'text-red-400' : 'text-zinc-400'}`} />
-            <span className="hidden sm:inline">
-              {isDarkroomMode ? 'Darkroom: ON' : 'Darkroom'}
-            </span>
-            <span className="text-[10px] font-mono-tech opacity-60 hidden lg:inline">[D]</span>
-          </button>
+          {/* Gallery Ambient Theme Selector */}
+          <ThemeSelector
+            currentTheme={currentTheme}
+            onSelectTheme={onSelectTheme}
+          />
 
           {/* Commission Request CTA button */}
           <button
@@ -106,8 +96,39 @@ export default function Navbar({
             onClick={() => scrollToSection('commission-section')}
             className="block w-full text-left text-sm uppercase tracking-widest text-zinc-300 hover:text-amber-300 py-1"
           >
-            Custom Commissions
+            Custom Requests
           </button>
+
+          <div className="pt-2 border-t border-white/5 space-y-2">
+            <span className="text-[10px] font-mono-tech uppercase tracking-widest text-zinc-400 block">
+              Theme Ambience
+            </span>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { id: 'atelier', name: 'Atelier Gold', color: '#d4af37' },
+                { id: 'darkroom', name: 'Darkroom B&W', color: '#ef4444' },
+                { id: 'midnight', name: 'Midnight Blue', color: '#38bdf8' },
+                { id: 'sepia', name: 'Warm Sepia', color: '#d97706' },
+              ].map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => {
+                    onSelectTheme(t.id);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`flex items-center gap-2 p-2 rounded-lg text-xs font-mono-tech border ${
+                    currentTheme === t.id
+                      ? 'bg-white/10 border-white/20 text-white'
+                      : 'bg-zinc-900/50 border-white/5 text-zinc-400'
+                  }`}
+                >
+                  <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: t.color }} />
+                  <span>{t.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="pt-2">
             <button
               onClick={() => {
@@ -116,7 +137,7 @@ export default function Navbar({
               }}
               className="w-full py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider bg-amber-500/20 text-amber-200 border border-amber-500/40 text-center"
             >
-              Request Custom Drawing
+              Request Drawing
             </button>
           </div>
         </div>

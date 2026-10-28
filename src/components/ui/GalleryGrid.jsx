@@ -7,6 +7,7 @@ import { downloadArtwork } from '../../utils/downloadHelper';
 function ArtworkCard({
   artwork,
   idx,
+  theme = 'atelier',
   isDarkroomMode,
   onInspectArtwork,
 }) {
@@ -41,6 +42,8 @@ function ArtworkCard({
     setTimeout(() => setIsDownloaded(false), 2500);
   };
 
+  const isDarkroom = theme === 'darkroom' || isDarkroomMode;
+
   return (
     <motion.div
       layout
@@ -49,8 +52,12 @@ function ArtworkCard({
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, delay: Math.min(idx * 0.03, 0.3) }}
       className={`group relative rounded-2xl overflow-hidden shadow-xl transition-all duration-300 flex flex-col cursor-pointer border ${
-        isDarkroomMode
+        isDarkroom
           ? 'bg-black border-red-950/40 hover:border-red-500/50 shadow-[0_0_20px_rgba(220,38,38,0.15)]'
+          : theme === 'midnight'
+          ? 'bg-slate-950/90 border-sky-950/60 hover:border-sky-500/50 shadow-[0_0_20px_rgba(56,189,248,0.15)]'
+          : theme === 'sepia'
+          ? 'bg-stone-950/90 border-amber-950/60 hover:border-amber-600/50 shadow-[0_0_20px_rgba(217,119,6,0.15)]'
           : 'bg-zinc-950/80 border-white/10 hover:border-amber-500/40'
       }`}
       onClick={() => onInspectArtwork(artwork)}
@@ -61,12 +68,24 @@ function ArtworkCard({
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         className={`spotlight-artwork-container relative aspect-[3/4] p-3 overflow-hidden flex items-center justify-center transition-colors ${
-          isDarkroomMode ? 'bg-[#050506]' : 'bg-[#0c0d10]'
+          isDarkroom
+            ? 'bg-[#050506]'
+            : theme === 'midnight'
+            ? 'bg-[#040812]'
+            : theme === 'sepia'
+            ? 'bg-[#0f0c09]'
+            : 'bg-[#0c0d10]'
         }`}
       >
         <div
           className={`relative w-full h-full p-2 rounded shadow-md overflow-hidden flex items-center justify-center transition-colors ${
-            isDarkroomMode ? 'bg-[#f0ede6]' : 'bg-[#f4f2ea]'
+            isDarkroom
+              ? 'bg-[#f0ede6]'
+              : theme === 'midnight'
+              ? 'bg-[#e8edf5]'
+              : theme === 'sepia'
+              ? 'bg-[#ede5d8]'
+              : 'bg-[#f4f2ea]'
           }`}
         >
           <img
@@ -80,20 +99,34 @@ function ArtworkCard({
           <div className="pointer-events-none absolute inset-0 paper-grain opacity-25 mix-blend-multiply" />
         </div>
 
-        {/* Category & Darkroom Badge */}
+        {/* Category & Theme Badge */}
         <div className="absolute top-5 left-5 z-20 flex items-center gap-1.5">
           <span
             className={`text-[10px] font-mono-tech uppercase tracking-wider px-2 py-0.5 rounded-full border backdrop-blur-md ${
-              isDarkroomMode
+              isDarkroom
                 ? 'bg-black/90 text-red-300 border-red-500/30'
+                : theme === 'midnight'
+                ? 'bg-slate-950/90 text-sky-300 border-sky-500/30'
+                : theme === 'sepia'
+                ? 'bg-stone-950/90 text-amber-300 border-amber-600/30'
                 : 'bg-zinc-950/85 text-zinc-300 border-white/10'
             }`}
           >
             {artwork.categoryName}
           </span>
-          {isDarkroomMode && (
+          {isDarkroom && (
             <span className="text-[9px] font-mono-tech uppercase tracking-widest px-1.5 py-0.5 rounded bg-red-950/80 text-red-400 border border-red-500/40">
               B&W
+            </span>
+          )}
+          {theme === 'midnight' && (
+            <span className="text-[9px] font-mono-tech uppercase tracking-widest px-1.5 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-500/40">
+              SAPPHIRE
+            </span>
+          )}
+          {theme === 'sepia' && (
+            <span className="text-[9px] font-mono-tech uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-600/40">
+              SEPIA
             </span>
           )}
         </div>
@@ -205,6 +238,7 @@ function ArtworkCard({
 
 export default function GalleryGrid({
   artworks = [],
+  theme = 'atelier',
   isDarkroomMode = false,
   onInspectArtwork,
 }) {
@@ -218,6 +252,7 @@ export default function GalleryGrid({
               key={artwork.id}
               artwork={artwork}
               idx={idx}
+              theme={theme}
               isDarkroomMode={isDarkroomMode}
               onInspectArtwork={onInspectArtwork}
             />

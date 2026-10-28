@@ -21,6 +21,7 @@ import { downloadArtwork } from '../../utils/downloadHelper';
 
 export default function ArtworkDetailModal({
   artwork,
+  theme = 'atelier',
   isDarkroomMode = false,
   onClose,
   onInquireArtwork,
@@ -32,7 +33,9 @@ export default function ArtworkDetailModal({
   const [spotlight, setSpotlight] = useState({ x: 0, y: 0, active: false });
 
   // Inspection mode: standard, contrast, warm, mono
-  const [filterMode, setFilterMode] = useState(isDarkroomMode ? 'mono' : 'standard');
+  const [filterMode, setFilterMode] = useState(
+    theme === 'darkroom' || isDarkroomMode ? 'mono' : theme === 'sepia' ? 'warm' : 'standard'
+  );
 
   // Magnifier Loupe mode
   const [loupeActive, setLoupeActive] = useState(false);
