@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CheckCircle, ArrowUp } from 'lucide-react';
+import TempleLogo from './TempleLogo';
 
 export default function Footer() {
   const [subscribed, setSubscribed] = useState(false);
@@ -22,8 +23,8 @@ export default function Footer() {
           {/* Brand & Manifesto (5 cols) */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded bg-gradient-to-br from-amber-600/40 via-zinc-900 to-black border border-amber-500/30 flex items-center justify-center">
-                <span className="font-display font-bold text-sm text-amber-200">A</span>
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-950/40 via-zinc-900/80 to-black border border-blue-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(42,77,124,0.2)] p-1">
+                <TempleLogo className="w-full h-full object-contain" id="footer-temple-logo" />
               </div>
               <span className="font-display tracking-[0.2em] text-base font-bold text-zinc-100">
                 AVATAR

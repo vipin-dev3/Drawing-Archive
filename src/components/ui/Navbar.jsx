@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Compass, Mail, Menu, X, Contrast } from 'lucide-react';
 import StudioAudio from './StudioAudio';
+import TempleLogo from './TempleLogo';
 
 export default function Navbar({
   isDarkroomMode = false,
@@ -21,9 +22,12 @@ export default function Navbar({
     <header className="fixed top-0 left-0 right-0 z-40 bg-[#08080a]/90 backdrop-blur-md border-b border-white/5 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand / Atelier Logo */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-600/30 via-zinc-900 to-zinc-950 border border-amber-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(197,160,89,0.15)]">
-            <span className="font-display font-bold text-lg text-amber-200 tracking-wider">A</span>
+        <div
+          className="flex items-center gap-3 group cursor-pointer"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-blue-950/40 via-zinc-900/80 to-black border border-blue-500/20 flex items-center justify-center shadow-[0_0_20px_rgba(42,77,124,0.25)] group-hover:border-blue-400/40 transition-all p-1">
+            <TempleLogo className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(42,77,124,0.5)] transition-transform duration-300 group-hover:scale-105" id="nav-temple-logo" />
           </div>
           <span className="font-display tracking-[0.2em] text-base sm:text-lg font-bold text-zinc-100 uppercase">
             AVATAR
