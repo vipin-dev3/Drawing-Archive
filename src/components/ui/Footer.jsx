@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle, Heart, ArrowUp } from 'lucide-react';
+import { CheckCircle, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
   const [subscribed, setSubscribed] = useState(false);

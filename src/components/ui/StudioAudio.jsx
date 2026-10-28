@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, Sparkles } from 'lucide-react';
+import { Volume2, VolumeX } from 'lucide-react';
 
 /**
  * Self-contained ambient soundscape generator using the Web Audio API.

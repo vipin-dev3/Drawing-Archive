@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Compass, User, Palette, Mail, Menu, X, Sparkles, Contrast } from 'lucide-react';
+import { Compass, Mail, Menu, X, Contrast } from 'lucide-react';
 import StudioAudio from './StudioAudio';
 
 export default function Navbar({
@@ -25,19 +25,9 @@ export default function Navbar({
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-600/30 via-zinc-900 to-zinc-950 border border-amber-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(197,160,89,0.15)]">
             <span className="font-display font-bold text-lg text-amber-200 tracking-wider">A</span>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-display tracking-[0.2em] text-base sm:text-lg font-bold text-zinc-100 uppercase">
-                AVATAR
-              </span>
-              <span className="hidden sm:inline-block text-[10px] tracking-widest uppercase px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
-                Free HD Downloads
-              </span>
-            </div>
-            <p className="text-[11px] text-zinc-400 tracking-wider uppercase font-mono-tech hidden sm:block">
-              Original Hand Drawings & Sketch Archive
-            </p>
-          </div>
+          <span className="font-display tracking-[0.2em] text-base sm:text-lg font-bold text-zinc-100 uppercase">
+            AVATAR
+          </span>
         </div>
 
         {/* Desktop Navigation Links */}
@@ -85,7 +75,6 @@ export default function Navbar({
             onClick={onOpenCommission}
             className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase text-amber-100 bg-gradient-to-r from-amber-700/60 via-amber-600/50 to-amber-800/60 border border-amber-500/40 hover:border-amber-400 hover:shadow-[0_0_20px_rgba(245,158,11,0.25)] transition-all cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span>Request Drawing</span>
           </button>
 

@@ -5,11 +5,10 @@ import {
   ZoomIn,
   ZoomOut,
   RotateCcw,
-  Sparkles,
+  Palette,
   Layers,
   Clock,
   Ruler,
-  Calendar,
   CheckCircle,
   Share2,
   Eye,
@@ -357,7 +356,7 @@ export default function ArtworkDetailModal({
               {/* Artistic Story & Context */}
               <div>
                 <h3 className="text-xs uppercase tracking-widest text-amber-300/80 font-mono-tech flex items-center gap-1.5 mb-2">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <Palette className="w-3.5 h-3.5 text-amber-400" />
                   <span>Artistic Story & Notes</span>
                 </h3>
                 <p className="text-sm text-zinc-300 font-serif-elegant leading-relaxed text-justify">

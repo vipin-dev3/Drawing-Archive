@@ -3,11 +3,8 @@ import confetti from 'canvas-confetti';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Send,
-  Sparkles,
   CheckCircle,
   ShieldCheck,
-  Calendar,
-  Layers,
   X
 } from 'lucide-react';
 import { COMMISSION_TIERS } from '../../data/artworksData';

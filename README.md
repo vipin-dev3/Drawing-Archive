@@ -69,7 +69,7 @@ ART/
 │   │       ├── Navbar.jsx            # Header, links & audio synthesizer toggle
 │   │       └── StudioAudio.jsx       # Web Audio API ambient pencil soundscape
 │   ├── data/
-│   │   └── artworksData.js           # Decoupled database: 25 artworks, artist & tools
+│   │   └── artworksData.js           # Decoupled database: 26 artworks, artist & tools
 │   ├── utils/
 │   │   └── downloadHelper.js         # Reliable blob download utility
 │   ├── App.jsx                       # Root layout & state orchestration
@@ -104,8 +104,8 @@ npm run build
 ---
 
 ## 📝 Adding More Drawings
-1. Place image files in [`public/artworks/`](file:///C:/Users/avata/ART/public/artworks/).
-2. Add an entry in [`src/data/artworksData.js`](file:///C:/Users/avata/ART/src/data/artworksData.js):
+1. Place image files in [`public/artworks/`](file:///public/artworks/).
+2. Add an entry in [`src/data/artworksData.js`](file:///src/data/artworksData.js):
 ```javascript
 {
   id: 'art-custom-01',

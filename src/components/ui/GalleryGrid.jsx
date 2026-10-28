@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Maximize2, Download, Check, Sparkles, Eye } from 'lucide-react';
+import { Maximize2, Download, Check } from 'lucide-react';
 import { downloadArtwork } from '../../utils/downloadHelper';
 
 // Single Artwork Card with dynamic Spotlight Follow Effect

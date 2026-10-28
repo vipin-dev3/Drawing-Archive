@@ -13,11 +13,11 @@ export const ARTWORK_CATEGORIES = [
 
 /**
  * Base path resolver supporting both root domain deployments (Vercel, Netlify, custom domain)
- * and repository subfolder deployments (GitHub Pages at /MY-Art/).
+ * and repository subfolder deployments (GitHub Pages at /Drawing-Archive/).
  */
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined' && window.location.pathname.startsWith('/MY-Art')) {
-    return '/MY-Art';
+  if (typeof window !== 'undefined' && window.location.pathname.startsWith('/Drawing-Archive')) {
+    return '/Drawing-Archive';
   }
   const base = import.meta.env.BASE_URL || '/';
   return base === '/' ? '' : base.replace(/\/$/, '');

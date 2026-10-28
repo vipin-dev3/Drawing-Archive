@@ -6,7 +6,7 @@ import GalleryGrid from './components/ui/GalleryGrid';
 import ArtworkDetailModal from './components/ui/ArtworkDetailModal';
 import CommissionSection from './components/ui/CommissionSection';
 import Footer from './components/ui/Footer';
-import { Sparkles, Search, Contrast, Eye } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -113,21 +113,6 @@ export default function App() {
         {/* Exhibition Hero & Header */}
         <section id="gallery-section" className="relative pt-6 pb-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-            <div
-              className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono-tech uppercase tracking-widest border transition-colors ${
-                isDarkroomMode
-                  ? 'bg-red-950/40 border-red-500/40 text-red-300'
-                  : 'bg-amber-500/10 border-amber-500/20 text-amber-300'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>
-                {isDarkroomMode
-                  ? 'High-Contrast Silver Gelatin B&W Collection'
-                  : 'Original Drawings & High-Res Master Archive'}
-              </span>
-            </div>
-
             <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100">
               {isDarkroomMode ? 'The B&W Darkroom Archive' : 'The Drawing Archive'}
             </h1>
