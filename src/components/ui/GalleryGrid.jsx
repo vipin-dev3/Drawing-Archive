@@ -15,6 +15,9 @@ function ArtworkCard({
   const [isDownloading, setIsDownloading] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
 
+  const isDarkroom = theme === 'darkroom' || isDarkroomMode;
+  const isLight = theme === 'light';
+
   // Dynamic Spotlight Follow Effect: moves ambient illumination towards cursor
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -42,8 +45,6 @@ function ArtworkCard({
     setTimeout(() => setIsDownloaded(false), 2500);
   };
 
-  const isDarkroom = theme === 'darkroom' || isDarkroomMode;
-
   return (
     <motion.div
       layout
@@ -51,14 +52,16 @@ function ArtworkCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, delay: Math.min(idx * 0.03, 0.3) }}
-      className={`group relative rounded-2xl overflow-hidden shadow-xl transition-all duration-300 flex flex-col cursor-pointer border ${
+      className={`group relative rounded-2xl overflow-hidden transition-all duration-300 flex flex-col cursor-pointer border ${
         isDarkroom
           ? 'bg-black border-red-950/40 hover:border-red-500/50 shadow-[0_0_20px_rgba(220,38,38,0.15)]'
           : theme === 'midnight'
           ? 'bg-slate-950/90 border-sky-950/60 hover:border-sky-500/50 shadow-[0_0_20px_rgba(56,189,248,0.15)]'
           : theme === 'sepia'
           ? 'bg-stone-950/90 border-amber-950/60 hover:border-amber-600/50 shadow-[0_0_20px_rgba(217,119,6,0.15)]'
-          : 'bg-zinc-950/80 border-white/10 hover:border-amber-500/40'
+          : isLight
+          ? 'bg-white border-zinc-200/90 hover:border-amber-500/60 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_32px_rgba(212,175,55,0.18)]'
+          : 'bg-zinc-950/80 border-white/10 hover:border-amber-500/40 shadow-xl'
       }`}
       onClick={() => onInspectArtwork(artwork)}
     >
@@ -74,6 +77,8 @@ function ArtworkCard({
             ? 'bg-[#040812]'
             : theme === 'sepia'
             ? 'bg-[#0f0c09]'
+            : isLight
+            ? 'bg-[#eceef2]'
             : 'bg-[#0c0d10]'
         }`}
       >
@@ -85,6 +90,8 @@ function ArtworkCard({
               ? 'bg-[#e8edf5]'
               : theme === 'sepia'
               ? 'bg-[#ede5d8]'
+              : isLight
+              ? 'bg-[#ffffff] shadow-[inset_0_0_12px_rgba(0,0,0,0.03)]'
               : 'bg-[#f4f2ea]'
           }`}
         >
@@ -109,6 +116,8 @@ function ArtworkCard({
                 ? 'bg-slate-950/90 text-sky-300 border-sky-500/30'
                 : theme === 'sepia'
                 ? 'bg-stone-950/90 text-amber-300 border-amber-600/30'
+                : isLight
+                ? 'bg-white/95 text-zinc-800 border-zinc-200/90 shadow-xs'
                 : 'bg-zinc-950/85 text-zinc-300 border-white/10'
             }`}
           >
@@ -120,13 +129,18 @@ function ArtworkCard({
             </span>
           )}
           {theme === 'midnight' && (
-            <span className="text-[9px] font-mono-tech uppercase tracking-widest px-1.5 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-500/40">
+            <span className="text-[9px] font-mono-tech uppercase tracking-widest px-1.5 py-0.5 rounded bg-sky-950/80 text-sky-400 border border-sky-500/40">
               SAPPHIRE
             </span>
           )}
           {theme === 'sepia' && (
-            <span className="text-[9px] font-mono-tech uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-600/40">
+            <span className="text-[9px] font-mono-tech uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-950/80 text-amber-400 border border-amber-600/40">
               SEPIA
+            </span>
+          )}
+          {isLight && (
+            <span className="text-[9px] font-mono-tech uppercase tracking-widest px-1.5 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200">
+              DAYLIGHT
             </span>
           )}
         </div>
@@ -142,20 +156,14 @@ function ArtworkCard({
             title="Inspect with 3.0x Texture Loupe"
           >
             <Maximize2 className="w-3.5 h-3.5 text-amber-400" />
-            <span>Inspect</span>
+            <span>Studio Zoom</span>
           </button>
 
           <button
             onClick={handleDownload}
             disabled={isDownloading}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold shadow-lg transition-all cursor-pointer ${
-              isDownloaded
-                ? 'bg-emerald-500 text-black'
-                : isDarkroomMode
-                ? 'bg-red-500 hover:bg-red-400 text-black'
-                : 'bg-amber-500 hover:bg-amber-400 text-black'
-            }`}
-            title="Download Full Resolution Artwork"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-black text-xs font-bold hover:brightness-110 transition-all shadow-lg cursor-pointer disabled:opacity-50"
+            title="Download Master Resolution scan file"
           >
             {isDownloaded ? (
               <>
@@ -180,52 +188,82 @@ function ArtworkCard({
       {/* Card Details & Download Bar */}
       <div
         className={`p-4 flex-1 flex flex-col justify-between space-y-3 transition-colors ${
-          isDarkroomMode ? 'bg-[#070709]' : 'bg-[#0a0a0d]'
+          isDarkroom
+            ? 'bg-[#070709]'
+            : isLight
+            ? 'bg-[#fafafa]'
+            : 'bg-[#0a0a0d]'
         }`}
       >
         <div>
-          <div className="flex items-center justify-between text-[11px] font-mono-tech text-zinc-500">
+          <div
+            className={`flex items-center justify-between text-[11px] font-mono-tech ${
+              isLight ? 'text-zinc-500' : 'text-zinc-500'
+            }`}
+          >
             <span>{artwork.year}</span>
             <span>{artwork.dimensions}</span>
           </div>
           <h3
             className={`font-display text-base font-bold transition-colors truncate mt-1 ${
-              isDarkroomMode
+              isDarkroom
                 ? 'text-zinc-100 group-hover:text-red-400'
+                : isLight
+                ? 'text-zinc-900 group-hover:text-amber-800'
                 : 'text-zinc-100 group-hover:text-amber-300'
             }`}
           >
             {artwork.title}
           </h3>
-          <p className="text-xs text-zinc-400 font-mono-tech truncate mt-0.5">
+          <p
+            className={`text-xs font-mono-tech truncate mt-0.5 ${
+              isLight ? 'text-zinc-600' : 'text-zinc-400'
+            }`}
+          >
             {artwork.medium}
           </p>
         </div>
 
         {/* Card Footer with Quick Download Trigger */}
-        <div className="pt-3 border-t border-white/5 flex items-center justify-between">
+        <div
+          className={`pt-3 border-t flex items-center justify-between ${
+            isLight ? 'border-zinc-200/80' : 'border-white/5'
+          }`}
+        >
           <span
             className={`text-[11px] font-mono-tech flex items-center gap-1 ${
-              isDarkroomMode ? 'text-red-400/90' : 'text-emerald-400/90'
+              isDarkroom
+                ? 'text-red-400/90'
+                : isLight
+                ? 'text-amber-800 font-medium'
+                : 'text-emerald-400/90'
             }`}
           >
             <span
               className={`w-1.5 h-1.5 rounded-full ${
-                isDarkroomMode ? 'bg-red-500 animate-pulse' : 'bg-emerald-400'
+                isDarkroom
+                  ? 'bg-red-500 animate-pulse'
+                  : isLight
+                  ? 'bg-amber-600'
+                  : 'bg-emerald-400'
               }`}
             />
-            {isDarkroomMode ? 'Silver Gelatin B&W' : 'Master Quality Scan'}
+            {isDarkroom ? 'Silver Gelatin B&W' : 'Master Quality Scan'}
           </span>
 
           <button
             onClick={handleDownload}
-            className={`p-1.5 rounded-lg text-zinc-400 transition-colors ${
-              isDarkroomMode ? 'hover:text-red-400 hover:bg-red-950/40' : 'hover:text-amber-300 hover:bg-zinc-800/80'
+            className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+              isLight
+                ? 'text-zinc-600 hover:text-amber-800 hover:bg-zinc-200/60'
+                : isDarkroom
+                ? 'text-zinc-400 hover:text-red-400 hover:bg-red-950/40'
+                : 'text-zinc-400 hover:text-amber-300 hover:bg-zinc-800/80'
             }`}
             title="Direct Download Original File"
           >
             {isDownloaded ? (
-              <Check className="w-4 h-4 text-emerald-400" />
+              <Check className="w-4 h-4 text-emerald-500" />
             ) : (
               <Download className="w-4 h-4" />
             )}

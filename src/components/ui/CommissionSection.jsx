@@ -12,7 +12,9 @@ import { COMMISSION_TIERS } from '../../data/artworksData';
 export default function CommissionSection({
   prefilledArtwork = null,
   onClearPrefilledArtwork,
+  theme = 'atelier',
 }) {
+  const isLight = theme === 'light';
   const [selectedTier, setSelectedTier] = useState('portrait');
   const [selectedSize, setSelectedSize] = useState('medium');
   const [framedOption, setFramedOption] = useState(true);
@@ -79,13 +81,25 @@ export default function CommissionSection({
 
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-16">
-        <span className="text-xs font-mono-tech tracking-[0.25em] text-amber-400 uppercase">
+        <span
+          className={`text-xs font-mono-tech tracking-[0.25em] uppercase ${
+            isLight ? 'text-amber-800 font-bold' : 'text-amber-400'
+          }`}
+        >
           Private Commissions & Inquiries
         </span>
-        <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-100 tracking-tight mt-3">
+        <h2
+          className={`font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mt-3 ${
+            isLight ? 'text-zinc-900' : 'text-zinc-100'
+          }`}
+        >
           Commission a Custom Drawing
         </h2>
-        <p className="text-sm sm:text-base text-zinc-400 font-serif-elegant mt-3">
+        <p
+          className={`text-sm sm:text-base font-serif-elegant mt-3 ${
+            isLight ? 'text-zinc-600' : 'text-zinc-400'
+          }`}
+        >
           Request a bespoke hand-drawn portrait, wildlife study, or anime illustration tailored to your personal collection.
         </p>
         <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mt-4" />
@@ -102,7 +116,11 @@ export default function CommissionSection({
                 onClick={() => setSelectedTier(tier.id)}
                 className={`relative p-6 rounded-2xl cursor-pointer transition-all border flex flex-col justify-between ${
                   isSelected
-                    ? 'bg-amber-500/10 border-amber-500/60 shadow-[0_0_25px_rgba(245,158,11,0.2)]'
+                    ? isLight
+                      ? 'bg-amber-50/95 border-amber-500/80 shadow-[0_4px_24px_rgba(212,175,55,0.22)]'
+                      : 'bg-amber-500/10 border-amber-500/60 shadow-[0_0_25px_rgba(245,158,11,0.2)]'
+                    : isLight
+                    ? 'bg-white border-zinc-200/90 hover:border-zinc-300 shadow-xs'
                     : 'bg-zinc-950/60 border-white/5 hover:border-white/20'
                 }`}
               >
@@ -112,19 +130,39 @@ export default function CommissionSection({
                   </span>
                 )}
                 <div>
-                  <h3 className="font-display text-lg font-bold text-zinc-100">
+                  <h3
+                    className={`font-display text-lg font-bold ${
+                      isLight ? 'text-zinc-900' : 'text-zinc-100'
+                    }`}
+                  >
                     {tier.name}
                   </h3>
-                  <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
+                  <p
+                    className={`text-xs mt-2 leading-relaxed ${
+                      isLight ? 'text-zinc-600' : 'text-zinc-400'
+                    }`}
+                  >
                     {tier.description}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                  <span className="text-[10px] uppercase font-mono-tech text-amber-400/90 font-medium">
+                <div
+                  className={`mt-6 pt-4 border-t flex items-center justify-between ${
+                    isLight ? 'border-zinc-200' : 'border-white/5'
+                  }`}
+                >
+                  <span
+                    className={`text-[10px] uppercase font-mono-tech font-medium ${
+                      isLight ? 'text-amber-800' : 'text-amber-400/90'
+                    }`}
+                  >
                     {tier.leadTime}
                   </span>
-                  <span className="text-xs text-zinc-400 font-mono-tech">
+                  <span
+                    className={`text-xs font-mono-tech ${
+                      isLight ? 'text-zinc-500' : 'text-zinc-400'
+                    }`}
+                  >
                     Bespoke Original
                   </span>
                 </div>
@@ -135,7 +173,13 @@ export default function CommissionSection({
       )}
 
       {/* Main Form Card */}
-      <div className="max-w-4xl mx-auto rounded-3xl bg-zinc-950/90 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden">
+      <div
+        className={`max-w-4xl mx-auto rounded-3xl overflow-hidden border transition-all ${
+          isLight
+            ? 'bg-white border-zinc-200/90 shadow-[0_12px_40px_rgba(0,0,0,0.06)]'
+            : 'bg-zinc-950/90 border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.8)]'
+        }`}
+      >
         {/* If prefilled artwork banner */}
         {prefilledArtwork && (
           <div className="p-4 sm:p-6 bg-gradient-to-r from-amber-950/40 via-zinc-900/60 to-zinc-950 border-b border-amber-500/30 flex items-center justify-between gap-4">
@@ -199,24 +243,48 @@ export default function CommissionSection({
                             onClick={() => setSelectedSize(s.id)}
                             className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                               selectedSize === s.id
-                                ? 'bg-amber-500/15 border-amber-500/60 text-white'
+                                ? isLight
+                                  ? 'bg-amber-100/80 border-amber-500 text-amber-950 font-semibold'
+                                  : 'bg-amber-500/15 border-amber-500/60 text-white'
+                                : isLight
+                                ? 'bg-zinc-50 border-zinc-200 text-zinc-600 hover:border-zinc-300'
                                 : 'bg-zinc-900/60 border-white/5 text-zinc-400 hover:border-white/20'
                             }`}
                           >
-                            <span className="text-xs font-bold block text-zinc-200">{s.label}</span>
-                            <span className="text-[11px] font-mono-tech text-amber-400/90">{s.size}</span>
+                            <span
+                              className={`text-xs font-bold block ${
+                                isLight ? 'text-zinc-900' : 'text-zinc-200'
+                              }`}
+                            >
+                              {s.label}
+                            </span>
+                            <span
+                              className={`text-[11px] font-mono-tech ${
+                                isLight ? 'text-amber-800' : 'text-amber-400/90'
+                              }`}
+                            >
+                              {s.size}
+                            </span>
                           </button>
                         ))}
                       </div>
                     </div>
 
                     {/* Framing Option */}
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/40 border border-white/5">
+                    <div
+                      className={`flex items-center justify-between p-4 rounded-xl border ${
+                        isLight ? 'bg-zinc-50 border-zinc-200' : 'bg-zinc-900/40 border-white/5'
+                      }`}
+                    >
                       <div>
-                        <span className="text-xs font-semibold text-zinc-200 block">
+                        <span
+                          className={`text-xs font-semibold block ${
+                            isLight ? 'text-zinc-900' : 'text-zinc-200'
+                          }`}
+                        >
                           Include Custom Framing & Archival Matting
                         </span>
-                        <span className="text-[11px] text-zinc-500">
+                        <span className={`text-[11px] ${isLight ? 'text-zinc-600' : 'text-zinc-500'}`}>
                           Handcrafted black oak frame with 100% cotton rag matting and protective UV glass.
                         </span>
                       </div>
@@ -227,44 +295,64 @@ export default function CommissionSection({
                           onChange={(e) => setFramedOption(e.target.checked)}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                        <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
                       </label>
                     </div>
                   </div>
                 )}
 
                 {/* Client Contact Inputs */}
-                <div className="space-y-4 pt-4 border-t border-white/10">
-                  <label className="text-xs font-mono-tech text-zinc-400 uppercase tracking-wider block">
+                <div
+                  className={`space-y-4 pt-4 border-t ${
+                    isLight ? 'border-zinc-200' : 'border-white/10'
+                  }`}
+                >
+                  <label
+                    className={`text-xs font-mono-tech uppercase tracking-wider block ${
+                      isLight ? 'text-zinc-600' : 'text-zinc-400'
+                    }`}
+                  >
                     {prefilledArtwork ? 'Your Contact Information' : '2. Your Details & Vision'}
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs text-zinc-400 block mb-1">Your Name *</label>
+                      <label className={`text-xs block mb-1 ${isLight ? 'text-zinc-600' : 'text-zinc-400'}`}>
+                        Your Name *
+                      </label>
                       <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. Liam Foster"
-                        className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-amber-500/80 transition-colors text-sm"
+                        className={`w-full px-4 py-3 rounded-xl border text-sm transition-colors focus:outline-none ${
+                          isLight
+                            ? 'bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white focus:border-amber-600'
+                            : 'bg-zinc-900 border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:border-amber-500/80'
+                        }`}
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-zinc-400 block mb-1">Email Address *</label>
+                      <label className={`text-xs block mb-1 ${isLight ? 'text-zinc-600' : 'text-zinc-400'}`}>
+                        Email Address *
+                      </label>
                       <input
                         type="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="liam@example.com"
-                        className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-amber-500/80 transition-colors text-sm"
+                        className={`w-full px-4 py-3 rounded-xl border text-sm transition-colors focus:outline-none ${
+                          isLight
+                            ? 'bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white focus:border-amber-600'
+                            : 'bg-zinc-900 border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:border-amber-500/80'
+                        }`}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-xs text-zinc-400 block mb-1">
+                    <label className={`text-xs block mb-1 ${isLight ? 'text-zinc-600' : 'text-zinc-400'}`}>
                       Subject, Reference Photos, or Special Vision
                     </label>
                     <textarea
@@ -272,22 +360,42 @@ export default function CommissionSection({
                       value={formData.details}
                       onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                       placeholder="Describe the subject, reference photo, anime/character preference, or specific aesthetic mood you'd like created..."
-                      className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-amber-500/80 transition-colors text-sm resize-none"
+                      className={`w-full px-4 py-3 rounded-xl border text-sm resize-none transition-colors focus:outline-none ${
+                        isLight
+                          ? 'bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white focus:border-amber-600'
+                          : 'bg-zinc-900 border-zinc-800 text-zinc-100 placeholder-zinc-600 focus:border-amber-500/80'
+                      }`}
                     />
                   </div>
                 </div>
 
                 {/* Summary & Submit */}
-                <div className="p-6 rounded-2xl bg-zinc-900/60 border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div
+                  className={`p-6 rounded-2xl border flex flex-col sm:flex-row items-center justify-between gap-6 ${
+                    isLight ? 'bg-amber-50/70 border-amber-200' : 'bg-zinc-900/60 border-white/5'
+                  }`}
+                >
                   <div>
-                    <span className="text-[10px] uppercase font-mono-tech text-zinc-400 tracking-wider block">
+                    <span
+                      className={`text-[10px] uppercase font-mono-tech tracking-wider block ${
+                        isLight ? 'text-zinc-600' : 'text-zinc-400'
+                      }`}
+                    >
                       Commission Scope
                     </span>
-                    <div className="font-display text-lg font-bold text-amber-300">
+                    <div
+                      className={`font-display text-lg font-bold ${
+                        isLight ? 'text-amber-950' : 'text-amber-300'
+                      }`}
+                    >
                       Original Custom Draftsmanship
                     </div>
-                    <span className="text-[11px] text-zinc-400 flex items-center gap-1 mt-0.5">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span
+                      className={`text-[11px] flex items-center gap-1 mt-0.5 ${
+                        isLight ? 'text-zinc-600' : 'text-zinc-400'
+                      }`}
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                       Includes Certificate of Authenticity & White-Glove Packaging
                     </span>
                   </div>

@@ -15,7 +15,7 @@ export default function App() {
   const [inspectingArtwork, setInspectingArtwork] = useState(null);
   const [prefilledArtwork, setPrefilledArtwork] = useState(null);
 
-  // Theme state: 'atelier', 'darkroom', 'midnight', 'sepia'
+  // Theme state: 'atelier', 'light', 'darkroom', 'midnight', 'sepia'
   const [theme, setTheme] = useState(() => {
     try {
       return localStorage.getItem('avatar_gallery_theme') || DEFAULT_THEME_ID;
@@ -35,6 +35,17 @@ export default function App() {
       // Ignore localStorage write error
     }
   };
+
+  // Synchronize <html> root class for light/dark mode
+  useEffect(() => {
+    if (activeThemeConfig.isLight) {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+    }
+  }, [activeThemeConfig.isLight]);
 
   // Compute artwork count per category
   const artworkCounts = useMemo(() => {
@@ -63,7 +74,7 @@ export default function App() {
 
   // Keyboard shortcut listener:
   // [D] toggles Darkroom mode
-  // [T] cycles through all 4 exhibition themes
+  // [T] cycles through all 5 exhibition themes
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -146,11 +157,19 @@ export default function App() {
         {/* Exhibition Hero & Header */}
         <section id="gallery-section" className="relative pt-6 pb-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-            <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100">
+            <h1
+              className={`font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight ${
+                activeThemeConfig.isLight ? 'text-zinc-900' : 'text-zinc-100'
+              }`}
+            >
               {activeThemeConfig.tagline}
             </h1>
 
-            <p className="text-xs sm:text-base text-zinc-400 max-w-2xl mx-auto font-serif-elegant italic leading-relaxed">
+            <p
+              className={`text-xs sm:text-base max-w-2xl mx-auto font-serif-elegant italic leading-relaxed ${
+                activeThemeConfig.isLight ? 'text-zinc-600' : 'text-zinc-400'
+              }`}
+            >
               Explore 26 original works in fine graphite, willow charcoal, Japanese manga ink, and devotional color.
               Move your cursor over any drawing to cast an ambient spotlight beam, or click to inspect and download in master resolution.
             </p>
@@ -158,26 +177,34 @@ export default function App() {
             {/* Search Bar */}
             <div className="max-w-md mx-auto pt-2">
               <div className="relative">
-                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
+                <Search
+                  className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 ${
+                    activeThemeConfig.isLight ? 'text-zinc-400' : 'text-zinc-500'
+                  }`}
+                />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search drawings by title, tag or medium..."
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-full text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none transition-colors shadow-inner border ${
-                    theme === 'darkroom'
-                      ? 'bg-black/90 border-red-900/40 focus:border-red-500/70'
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-full text-xs transition-colors shadow-inner border focus:outline-none ${
+                    theme === 'light'
+                      ? 'bg-white border-zinc-300 text-zinc-900 placeholder-zinc-400 focus:border-amber-600/70 shadow-sm'
+                      : theme === 'darkroom'
+                      ? 'bg-black/90 border-red-900/40 focus:border-red-500/70 text-zinc-200 placeholder-zinc-500'
                       : theme === 'midnight'
-                      ? 'bg-slate-950/90 border-sky-900/40 focus:border-sky-500/70'
+                      ? 'bg-slate-950/90 border-sky-900/40 focus:border-sky-500/70 text-zinc-200 placeholder-zinc-500'
                       : theme === 'sepia'
-                      ? 'bg-stone-950/90 border-amber-900/40 focus:border-amber-600/70'
-                      : 'bg-zinc-900/80 border-white/10 focus:border-amber-500/60'
+                      ? 'bg-stone-950/90 border-amber-900/40 focus:border-amber-600/70 text-zinc-200 placeholder-zinc-500'
+                      : 'bg-zinc-900/80 border-white/10 focus:border-amber-500/60 text-zinc-200 placeholder-zinc-500'
                   }`}
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 text-xs"
+                    className={`absolute right-3.5 top-1/2 -translate-y-1/2 text-xs cursor-pointer ${
+                      theme === 'light' ? 'text-zinc-400 hover:text-zinc-600' : 'text-zinc-500 hover:text-zinc-300'
+                    }`}
                   >
                     Clear
                   </button>
@@ -191,6 +218,7 @@ export default function App() {
                 selectedCategory={selectedCategory}
                 onSelectCategory={handleSelectCategory}
                 artworkCounts={artworkCounts}
+                isLight={activeThemeConfig.isLight}
               />
             </div>
           </div>
@@ -205,7 +233,7 @@ export default function App() {
                 onInspectArtwork={(art) => setInspectingArtwork(art)}
               />
             ) : (
-              <div className="py-20 text-center text-zinc-500 font-mono-tech text-sm">
+              <div className={`py-20 text-center font-mono-tech text-sm ${activeThemeConfig.isLight ? 'text-zinc-500' : 'text-zinc-500'}`}>
                 No drawings found matching "{searchQuery}". Try selecting another category or clearing your search.
               </div>
             )}
@@ -214,6 +242,7 @@ export default function App() {
 
         {/* Custom Commission & Inquiries Section */}
         <CommissionSection
+          theme={theme}
           prefilledArtwork={prefilledArtwork}
           onClearPrefilledArtwork={() => setPrefilledArtwork(null)}
         />
@@ -231,7 +260,7 @@ export default function App() {
       )}
 
       {/* Footer */}
-      <Footer />
+      <Footer theme={theme} />
     </div>
   );
 }

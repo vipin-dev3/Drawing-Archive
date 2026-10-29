@@ -6,7 +6,7 @@ import { Volume2, VolumeX } from 'lucide-react';
  * Synthesizes subtle studio pencil sketching whispers and gentle acoustic room tone.
  * No external mp3 files required.
  */
-export default function StudioAudio() {
+export default function StudioAudio({ isLight = false }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.25);
   const audioCtxRef = useRef(null);
@@ -126,9 +126,13 @@ export default function StudioAudio() {
     <div className="flex items-center gap-2">
       <button
         onClick={toggleSound}
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 border ${
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 border cursor-pointer ${
           isPlaying
-            ? 'bg-amber-500/15 border-amber-500/40 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.2)]'
+            ? isLight
+              ? 'bg-amber-100 border-amber-400 text-amber-900 shadow-xs'
+              : 'bg-amber-500/15 border-amber-500/40 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.2)]'
+            : isLight
+            ? 'bg-white border-zinc-200 text-zinc-700 hover:text-black hover:border-zinc-300 shadow-xs'
             : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
         }`}
         title={isPlaying ? 'Mute Studio Ambience' : 'Play Atelier Audio Ambience'}

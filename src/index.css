@@ -148,6 +148,46 @@
   transition: filter 0.4s ease;
 }
 
+/* 5. Gallery Daylight Theme (Light Mode) */
+.theme-light {
+  --bg-dark: #f8f8fa;
+  --bg-surface: #ffffff;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --theme-accent: #c5a059;
+  background-color: #f8f8fa !important;
+  color: #18181b !important;
+}
+
+.theme-light header {
+  background-color: rgba(248, 248, 250, 0.92) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.theme-light footer {
+  background-color: #f0f0f4 !important;
+  border-top-color: rgba(0, 0, 0, 0.08) !important;
+  color: #52525b !important;
+}
+
+.theme-light .font-display,
+.theme-light h1,
+.theme-light h2,
+.theme-light h3,
+.theme-light h4 {
+  color: #09090b !important;
+}
+
+.theme-light .category-filter-bar {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+.theme-light .artwork-image-el {
+  filter: contrast(102%) brightness(100%);
+  transition: filter 0.4s ease;
+}
+
 /* ==========================================================================
    Interactive Spotlight Follow Effect
    Ambient light moves dynamically towards the cursor over the artwork
@@ -203,4 +243,14 @@
     rgba(18, 15, 12, 0) 70%
   );
   mix-blend-mode: screen;
+}
+
+.theme-light .spotlight-artwork-container::after {
+  background: radial-gradient(
+    380px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(212, 175, 55, 0.16) 35%,
+    rgba(240, 240, 245, 0) 70%
+  );
+  mix-blend-mode: soft-light;
 }

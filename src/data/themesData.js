@@ -16,7 +16,23 @@ export const THEMES = [
     bgClass: 'bg-[#070709] text-zinc-100',
     tagline: 'The Drawing Archive',
     heroBadge: 'Archival Collection • Master Drawings',
-    bannerText: null
+    bannerText: null,
+    isLight: false
+  },
+  {
+    id: 'light',
+    name: 'Gallery Daylight',
+    subtitle: 'Alabaster & Golden Sun',
+    description: 'Bright contemporary museum aesthetic with pristine white walls and warm golden lighting.',
+    badge: 'Light',
+    primaryColor: '#c5a059',
+    accentColor: '#b45309',
+    swatches: ['#ffffff', '#e4e4e7', '#d4af37'],
+    bgClass: 'bg-[#f8f8fa] text-zinc-900',
+    tagline: 'The Daylight Pavilion',
+    heroBadge: 'Daylight Contemporary Exhibition',
+    bannerText: null,
+    isLight: true
   },
   {
     id: 'darkroom',
@@ -30,7 +46,8 @@ export const THEMES = [
     bgClass: 'bg-[#030304] text-zinc-200',
     tagline: 'The B&W Darkroom Archive',
     heroBadge: 'Photographic Safelight Active',
-    bannerText: 'DARKROOM SAFELIGHT ACTIVE: HIGH-CONTRAST B&W MODE'
+    bannerText: 'DARKROOM SAFELIGHT ACTIVE: HIGH-CONTRAST B&W MODE',
+    isLight: false
   },
   {
     id: 'midnight',
@@ -44,7 +61,8 @@ export const THEMES = [
     bgClass: 'bg-[#050a14] text-slate-100',
     tagline: 'The Midnight Pavilion',
     heroBadge: 'Midnight Blue Exhibition',
-    bannerText: null
+    bannerText: null,
+    isLight: false
   },
   {
     id: 'sepia',
@@ -58,7 +76,8 @@ export const THEMES = [
     bgClass: 'bg-[#120f0c] text-stone-100',
     tagline: 'The Archival Salon',
     heroBadge: 'Classical Salon Exhibition',
-    bannerText: null
+    bannerText: null,
+    isLight: false
   }
 ];
 

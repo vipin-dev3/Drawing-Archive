@@ -32,6 +32,8 @@ export default function ArtworkDetailModal({
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [spotlight, setSpotlight] = useState({ x: 0, y: 0, active: false });
 
+  const isLight = theme === 'light';
+
   // Inspection mode: standard, contrast, warm, mono
   const [filterMode, setFilterMode] = useState(
     theme === 'darkroom' || isDarkroomMode ? 'mono' : theme === 'sepia' ? 'warm' : 'standard'
@@ -156,21 +158,39 @@ export default function ArtworkDetailModal({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative z-10 w-full max-w-6xl max-h-[92vh] bg-[#0c0d12] border border-white/10 rounded-2xl sm:rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col lg:flex-row"
+          className={`relative z-10 w-full max-w-6xl max-h-[92vh] rounded-2xl sm:rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col lg:flex-row border transition-colors ${
+            isLight
+              ? 'bg-white border-zinc-200 text-zinc-900 shadow-2xl'
+              : 'bg-[#0c0d12] border-white/10 text-zinc-100'
+          }`}
         >
           {/* Top Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-30 p-2.5 rounded-full bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-white/10 backdrop-blur-md transition-all cursor-pointer shadow-lg"
+            className={`absolute top-4 right-4 z-30 p-2.5 rounded-full backdrop-blur-md transition-all cursor-pointer shadow-lg border ${
+              isLight
+                ? 'bg-white/90 hover:bg-zinc-100 text-zinc-700 hover:text-black border-zinc-200'
+                : 'bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border-white/10'
+            }`}
             title="Close [Esc]"
           >
             <X className="w-5 h-5" />
           </button>
 
           {/* LEFT: High-Res Inspection Viewport */}
-          <div className="relative flex-1 bg-[#070709] min-h-[380px] sm:min-h-[500px] lg:min-h-[640px] flex items-center justify-center overflow-hidden border-b lg:border-b-0 lg:border-r border-white/10 select-none">
+          <div
+            className={`relative flex-1 min-h-[380px] sm:min-h-[500px] lg:min-h-[640px] flex items-center justify-center overflow-hidden border-b lg:border-b-0 lg:border-r select-none transition-colors ${
+              isLight ? 'bg-[#f4f4f7] border-zinc-200' : 'bg-[#070709] border-white/10'
+            }`}
+          >
             {/* Viewport Control Bar */}
-            <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 p-1.5 rounded-full bg-zinc-950/80 border border-white/10 backdrop-blur-md text-zinc-300 shadow-xl">
+            <div
+              className={`absolute top-4 left-4 z-20 flex items-center gap-1.5 p-1.5 rounded-full backdrop-blur-md shadow-xl border ${
+                isLight
+                  ? 'bg-white/95 border-zinc-200 text-zinc-700'
+                  : 'bg-zinc-950/80 border-white/10 text-zinc-300'
+              }`}
+            >
               {/* Zoom In */}
               <button
                 onClick={() => setZoomLevel((z) => Math.min(3.5, z + 0.4))}
@@ -311,14 +331,30 @@ export default function ArtworkDetailModal({
           </div>
 
           {/* RIGHT: Curatorial Metadata & Download Panel */}
-          <div className="w-full lg:w-[420px] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto max-h-[85vh] bg-[#0c0d12]">
+          <div
+            className={`w-full lg:w-[420px] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto max-h-[85vh] transition-colors ${
+              isLight ? 'bg-white text-zinc-900' : 'bg-[#0c0d12] text-zinc-100'
+            }`}
+          >
             <div className="space-y-6">
               {/* Category & Status Badges */}
               <div className="flex items-center justify-between gap-2 flex-wrap">
-                <span className="text-xs uppercase tracking-widest font-mono-tech px-2.5 py-1 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                <span
+                  className={`text-xs uppercase tracking-widest font-mono-tech px-2.5 py-1 rounded border ${
+                    isLight
+                      ? 'bg-amber-100/70 text-amber-900 border-amber-300'
+                      : 'bg-amber-500/10 text-amber-300 border border-amber-500/20'
+                  }`}
+                >
                   {artwork.categoryName}
                 </span>
-                <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20">
+                <span
+                  className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded border ${
+                    isLight
+                      ? 'text-emerald-800 bg-emerald-50 border-emerald-300'
+                      : 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+                  }`}
+                >
                   <CheckCircle className="w-3.5 h-3.5" />
                   <span>Free High-Res Download</span>
                 </span>
@@ -326,53 +362,117 @@ export default function ArtworkDetailModal({
 
               {/* Artwork Title & Year */}
               <div>
-                <h2 className="font-display text-2xl sm:text-3xl text-zinc-100 font-bold tracking-tight">
+                <h2
+                  className={`font-display text-2xl sm:text-3xl font-bold tracking-tight ${
+                    isLight ? 'text-zinc-900' : 'text-zinc-100'
+                  }`}
+                >
                   {artwork.title}
                 </h2>
-                <p className="text-sm font-mono-tech text-zinc-400 mt-1">
+                <p
+                  className={`text-sm font-mono-tech mt-1 ${
+                    isLight ? 'text-zinc-500' : 'text-zinc-400'
+                  }`}
+                >
                   AVATAR Archive • Circa {artwork.year}
                 </p>
               </div>
 
               {/* Metadata Grid */}
-              <div className="grid grid-cols-2 gap-3 p-4 rounded-xl bg-zinc-950/60 border border-white/5 text-xs">
+              <div
+                className={`grid grid-cols-2 gap-3 p-4 rounded-xl border text-xs ${
+                  isLight
+                    ? 'bg-zinc-50 border-zinc-200 text-zinc-800'
+                    : 'bg-zinc-950/60 border-white/5 text-zinc-200'
+                }`}
+              >
                 <div>
-                  <span className="text-zinc-500 uppercase tracking-wider text-[10px] flex items-center gap-1">
+                  <span
+                    className={`uppercase tracking-wider text-[10px] flex items-center gap-1 ${
+                      isLight ? 'text-zinc-500' : 'text-zinc-500'
+                    }`}
+                  >
                     <Ruler className="w-3 h-3" /> Dimensions
                   </span>
-                  <p className="font-medium text-zinc-200 mt-0.5">{artwork.dimensions}</p>
+                  <p
+                    className={`font-medium mt-0.5 ${
+                      isLight ? 'text-zinc-900' : 'text-zinc-200'
+                    }`}
+                  >
+                    {artwork.dimensions}
+                  </p>
                 </div>
                 <div>
-                  <span className="text-zinc-500 uppercase tracking-wider text-[10px] flex items-center gap-1">
+                  <span
+                    className={`uppercase tracking-wider text-[10px] flex items-center gap-1 ${
+                      isLight ? 'text-zinc-500' : 'text-zinc-500'
+                    }`}
+                  >
                     <Clock className="w-3 h-3" /> Atelier Time
                   </span>
-                  <p className="font-medium text-zinc-200 mt-0.5">{artwork.estimatedHours}</p>
+                  <p
+                    className={`font-medium mt-0.5 ${
+                      isLight ? 'text-zinc-900' : 'text-zinc-200'
+                    }`}
+                  >
+                    {artwork.estimatedHours}
+                  </p>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-zinc-500 uppercase tracking-wider text-[10px] flex items-center gap-1">
+                  <span
+                    className={`uppercase tracking-wider text-[10px] flex items-center gap-1 ${
+                      isLight ? 'text-zinc-500' : 'text-zinc-500'
+                    }`}
+                  >
                     <Layers className="w-3 h-3" /> Medium & Substrate
                   </span>
-                  <p className="font-medium text-zinc-200 mt-0.5 leading-relaxed">{artwork.medium}</p>
+                  <p
+                    className={`font-medium mt-0.5 leading-relaxed ${
+                      isLight ? 'text-zinc-900' : 'text-zinc-200'
+                    }`}
+                  >
+                    {artwork.medium}
+                  </p>
                 </div>
               </div>
 
               {/* Artistic Story & Context */}
               <div>
-                <h3 className="text-xs uppercase tracking-widest text-amber-300/80 font-mono-tech flex items-center gap-1.5 mb-2">
-                  <Palette className="w-3.5 h-3.5 text-amber-400" />
+                <h3
+                  className={`text-xs uppercase tracking-widest font-mono-tech flex items-center gap-1.5 mb-2 ${
+                    isLight ? 'text-amber-800 font-bold' : 'text-amber-300/80'
+                  }`}
+                >
+                  <Palette className="w-3.5 h-3.5 text-amber-500" />
                   <span>Artistic Story & Notes</span>
                 </h3>
-                <p className="text-sm text-zinc-300 font-serif-elegant leading-relaxed text-justify">
+                <p
+                  className={`text-sm font-serif-elegant leading-relaxed text-justify ${
+                    isLight ? 'text-zinc-700' : 'text-zinc-300'
+                  }`}
+                >
                   {artwork.story}
                 </p>
               </div>
 
               {/* Technique Breakdown */}
-              <div className="p-3.5 rounded-lg bg-zinc-900/40 border border-white/5">
-                <span className="text-[11px] uppercase tracking-wider text-zinc-400 font-semibold block mb-1">
+              <div
+                className={`p-3.5 rounded-lg border ${
+                  isLight ? 'bg-zinc-50 border-zinc-200' : 'bg-zinc-900/40 border-white/5'
+                }`}
+              >
+                <span
+                  className={`text-[11px] uppercase tracking-wider font-semibold block mb-1 ${
+                    isLight ? 'text-zinc-600' : 'text-zinc-400'
+                  }`}
+                >
                   Drafting Technique:
                 </span>
-                <p className="text-xs text-zinc-300 leading-normal">
+                <p
+                  className={`text-xs leading-normal ${
+                    isLight ? 'text-zinc-700' : 'text-zinc-300'
+                  }`}
+                >
                   {artwork.technique}
                 </p>
               </div>
@@ -382,7 +482,11 @@ export default function ArtworkDetailModal({
                 {artwork.tags?.map((tag) => (
                   <span
                     key={tag}
-                    className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-zinc-800"
+                    className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                      isLight
+                        ? 'bg-zinc-100 text-zinc-700 border-zinc-200'
+                        : 'bg-zinc-900 text-zinc-400 border-zinc-800'
+                    }`}
                   >
                     #{tag}
                   </span>
@@ -391,15 +495,27 @@ export default function ArtworkDetailModal({
             </div>
 
             {/* Bottom Actions: High-Res Download & Inquire */}
-            <div className="pt-6 mt-6 border-t border-white/10 space-y-3">
+            <div
+              className={`pt-6 mt-6 border-t space-y-3 ${
+                isLight ? 'border-zinc-200' : 'border-white/10'
+              }`}
+            >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-mono-tech">
-                  <FileCheck className="w-4 h-4 text-emerald-400" />
+                <div
+                  className={`flex items-center gap-1.5 text-xs font-mono-tech ${
+                    isLight ? 'text-zinc-600' : 'text-zinc-400'
+                  }`}
+                >
+                  <FileCheck className="w-4 h-4 text-emerald-500" />
                   <span>File: {artwork.originalFilename || 'High-Res Master'}</span>
                 </div>
                 <button
                   onClick={handleShare}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-800 text-zinc-400 hover:text-white text-xs transition-colors cursor-pointer"
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs transition-colors cursor-pointer ${
+                    isLight
+                      ? 'border-zinc-200 text-zinc-700 hover:text-black hover:bg-zinc-100'
+                      : 'border-zinc-800 text-zinc-400 hover:text-white'
+                  }`}
                   title="Share link"
                 >
                   <Share2 className="w-3.5 h-3.5" />
@@ -414,6 +530,8 @@ export default function ArtworkDetailModal({
                 className={`w-full py-4 px-6 rounded-xl font-bold uppercase tracking-wider text-xs shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 ${
                   isDownloaded
                     ? 'bg-emerald-500 text-black shadow-emerald-500/20'
+                    : isLight
+                    ? 'bg-gradient-to-r from-amber-400 to-amber-500 hover:brightness-105 text-zinc-950 shadow-[0_4px_20px_rgba(212,175,55,0.3)]'
                     : 'bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-400 text-black shadow-[0_0_25px_rgba(245,158,11,0.3)]'
                 }`}
               >
@@ -441,7 +559,11 @@ export default function ArtworkDetailModal({
                   onClose();
                   onInquireArtwork?.(artwork);
                 }}
-                className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-zinc-400 hover:text-zinc-200 border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition-colors cursor-pointer text-center"
+                className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-colors cursor-pointer text-center border ${
+                  isLight
+                    ? 'text-zinc-700 hover:text-black border-zinc-200 hover:border-zinc-300 bg-zinc-100/70 hover:bg-zinc-200/50'
+                    : 'text-zinc-400 hover:text-zinc-200 border-zinc-800 hover:border-zinc-700 bg-zinc-900/50'
+                }`}
               >
                 Request Custom Drawing or Inquire About Piece
               </button>
